@@ -7,3 +7,7 @@ variable "cluster_name" {
   default = "tf_eks_fargate"
   type    = string
 }
+variable "environment" {
+  type    = string
+  default = "POC"
+}

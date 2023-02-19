@@ -18,8 +18,6 @@ resource "aws_vpc" "eks_vpc" {
      "kubernetes.io/cluster/${var.cluster_name}" = "shared"
      Environment = var.environment
     }
-  
-
 }
 
 /*==== Subnets ======*/
@@ -69,7 +67,6 @@ resource "aws_subnet" "private_subnet" {
   vpc_id                  = "${aws_vpc.eks_vpc.id}"
   count                   = "${length(var.private_subnets_cidr)}"
   cidr_block              = "${element(var.private_subnets_cidr, count.index)}"
-  ##availability_zone       = "${element(var.availability_zones,   count.index)}"
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   map_public_ip_on_launch = false
   tags = {

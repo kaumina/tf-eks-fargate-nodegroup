@@ -12,7 +12,8 @@ provider "aws" {
   region  = var.region
   default_tags {
     tags = {
-      Environment = "Test"
+      Environment = var.environment
+      Owner       = "DevOps"
 
     }
   }
@@ -39,16 +40,3 @@ module "eks_cluster" {
 
 }
 
-/*
-resource "null_resource" "this" {
-  provisioner "local_exec" {
-    command = "aws eks update_kubeconfig __region $REGION __name $CLUSTER_NAME"
-    environment = {
-      REGION = var.region
-      CLUSTER_NAME = var.cluster_name
-      
-    }
-
-  }
-}
-*/
