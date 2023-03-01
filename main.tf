@@ -19,7 +19,6 @@ provider "aws" {
   }
 
 }
-
 module "networking" {
   source               = "./modules/networking"
   cluster_name         = var.cluster_name
@@ -30,7 +29,6 @@ module "networking" {
 
 
 }
-
 module "eks_cluster" {
   source                 = "./modules/eks_cluster"
   cluster_name           = var.cluster_name
@@ -38,12 +36,3 @@ module "eks_cluster" {
   eks_subnet_ids         = module.networking.private_subnets
 
 }
-
-/*
-# Creating IAM OIDC Provider
-module "ingress" {
-  source       = "./modules/ingress"
-  cluster_name = var.cluster_name
-
-}
-*/

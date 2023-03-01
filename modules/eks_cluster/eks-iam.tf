@@ -2,6 +2,7 @@
 #             Attaching policies to assume role in EKS cluster
 ########################################################################################
 
+# Declare the data sources
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
@@ -25,18 +26,16 @@ resource "aws_iam_role" "eks_cluster" {
 }
 POLICY
 }
-
 resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = "${aws_iam_role.eks_cluster.name}"
 }
-
 resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSServicePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
   role       = "${aws_iam_role.eks_cluster.name}"
 }
 
-
+# Create Fargate POD execution role
 resource "aws_iam_role" "fargate_role" {
   name = "AmazonEKSFargatePodExecutionRole"
 
@@ -57,6 +56,7 @@ resource "aws_iam_role" "fargate_role" {
   })
 } 
 
+# Attach Managed policy to execution role
 resource "aws_iam_role_policy_attachment" "fargate_AmazonEKSFargatePodExecutionRolePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
   role       = aws_iam_role.fargate_role.name
@@ -104,8 +104,6 @@ resource "aws_iam_role" "AmazonEKSLoadBalancerControllerRole" {
   name               = "AmazonEKSLoadBalancerControllerRole"
 }
 
-
-
 # Create "AWSLoadBalancerControllerIAMPolicy" IAM Policy with pre downloaded policy JSON
 
 resource "aws_iam_policy" "AWSLoadBalancerControllerIAMPolicy" {
@@ -114,7 +112,6 @@ resource "aws_iam_policy" "AWSLoadBalancerControllerIAMPolicy" {
 }
 
 # Attach the required Amazon EKS managed IAM policy to the IAM role.
-
 resource "aws_iam_role_policy_attachment" "attach_aws_alb_controller_policy" {
   role       = aws_iam_role.AmazonEKSLoadBalancerControllerRole.name
   policy_arn = aws_iam_policy.AWSLoadBalancerControllerIAMPolicy.arn
