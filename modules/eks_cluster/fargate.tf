@@ -5,6 +5,9 @@ resource "aws_eks_fargate_profile" "eks_farget_1" {
   subnet_ids             = var.eks_subnet_ids
 
   selector {
+    namespace = "kube-system"
+  }
+  selector {
     namespace = "default"
   }
 }

@@ -38,7 +38,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSServicePolicy" {
 
 
 resource "aws_iam_role" "fargate_role" {
-  name = "eks_fargate_profile_role"
+  name = "AmazonEKSFargatePodExecutionRole"
 
   assume_role_policy = jsonencode({
     Statement = [{
