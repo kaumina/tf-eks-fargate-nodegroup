@@ -34,7 +34,5 @@ module "eks_cluster" {
   cluster_name           = var.cluster_name
   eks_security_group_ids = module.networking.eks_cluster_sg
   eks_subnet_ids         = module.networking.private_subnets
-  region                 = var.region
-  eks_vpc_id             = module.networking.vpc_id
 
 }

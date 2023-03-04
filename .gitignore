@@ -29,7 +29,3 @@ override.tf.json
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 .DS_Store
-
-# avoid dynamic generated files
-files/config.sh
-files/aws-load-balancer-controller-service-account.yaml
