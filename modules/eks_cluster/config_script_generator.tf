@@ -24,7 +24,9 @@ resource "local_file" "config_script" {
 
     echo "Updating kubconfig"
     aws eks update-kubeconfig --region ${var.region} --name ${var.cluster_name}
-    echo "Installing AWS Loadbalancer COntroller Add-on with Helm"
+    echo "Installing AWS Loadbalancer Controller Service Account"
+    kubectl apply -f files/aws-load-balancer-controller-service-account.yaml
+    echo "Installing AWS Loadbalancer Controller Add-on with Helm"
     helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
     -n kube-system --set clusterName=${var.cluster_name} --set serviceAccount.create=false \
     --set serviceAccount.name=aws-load-balancer-controller --set region=${var.region} \
