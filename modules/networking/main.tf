@@ -51,9 +51,8 @@ resource "aws_subnet" "public_subnet" {
   vpc_id                  = "${aws_vpc.eks_vpc.id}"
   count                   = "${length(var.public_subnets_cidr)}"
   cidr_block              = "${element(var.public_subnets_cidr,   count.index)}"
-  ##availability_zone       = "${element(var.availability_zones,   count.index)}"
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   tags = {
      Name = "eks_vpc_public"
      "kubernetes.io/cluster/${var.cluster_name}" = "shared"
