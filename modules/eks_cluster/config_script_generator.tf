@@ -20,22 +20,33 @@ resource "local_file" "alb_yml" {
 resource "local_file" "config_script" {
   filename = "files/config.sh"
   content = <<-EOT
-    #!/bin/bash
+  #!/bin/bash
 
-    echo "Updating kubconfig"
-    aws eks update-kubeconfig --region ${var.region} --name ${var.cluster_name}
-    echo "Installing AWS Loadbalancer Controller Service Account"
-    kubectl apply -f files/aws-load-balancer-controller-service-account.yaml
-    echo "Installing AWS Loadbalancer Controller Add-on with Helm"
-    helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
-    -n kube-system --set clusterName=${var.cluster_name} --set serviceAccount.create=false \
-    --set serviceAccount.name=aws-load-balancer-controller --set region=${var.region} \
-    --set vpcId=${var.eks_vpc_id}
-    echo "Remove CoreDNS EC2 Annotations"
-    kubectl patch deployment coredns -n kube-system \
-    --type=json -p='[{"op": "remove", "path": "/spec/template/metadata/annotations", "value": "eks.amazonaws.com/compute-type"}]'
-    echo "Rolling restart for CoreDNS pods"
-    kubectl rollout restart -n kube-system deployment coredns
+  set -euo pipefail
+
+  echo "Updating kubconfig"
+  aws eks update-kubeconfig --region "${var.region}" --name "${var.cluster_name}"
+
+  echo "Installing AWS Loadbalancer Controller Service Account"
+  kubectl apply -f files/aws-load-balancer-controller-service-account.yaml
+
+  echo "Installing AWS Loadbalancer Controller Add-on with Helm"
+  helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName="${var.cluster_name}" \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region="${var.region}" \
+  --set vpcId="${var.eks_vpc_id}"
+
+  echo "Remove CoreDNS EC2 Annotations"
+  kubectl patch deployment coredns -n kube-system \
+  --type=json \
+  -p='[{"op": "remove", "path": "/spec/template/metadata/annotations", "value": "eks.amazonaws.com/compute-type"}]'
+
+  echo "Rolling restart for CoreDNS pods"
+  kubectl rollout restart -n kube-system deployment coredns
+
 
 
     
