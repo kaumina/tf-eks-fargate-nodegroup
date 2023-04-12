@@ -2,6 +2,13 @@
 #             Creating EKS cluster
 ########################################################################################
 
+# Create CloudWatch log group for enabling EKS Logs
+resource "aws_cloudwatch_log_group" "cluster_cw_log_grp" {
+  name              = "/aws/eks/${var.cluster_name}/cluster"
+  retention_in_days = 7
+
+}
+
 # Create EKS cluster
 resource aws_eks_cluster eks {
   name            = "${var.cluster_name}"
@@ -21,9 +28,3 @@ resource aws_eks_cluster eks {
   ]
 }
 
-# Creating CloudWatch log group for enabling EKS Logs
-resource "aws_cloudwatch_log_group" "cluster_cw_log_grp" {
-  name              = "/aws/eks/${var.cluster_name}/cluster"
-  retention_in_days = 7
-
-}
