@@ -30,6 +30,8 @@ override.tf.json
 # example: *tfplan*
 .DS_Store
 
-# avoid dynamic generated files
+# avoid dynamically generated files
 files/config.sh
 files/aws-load-balancer-controller-service-account.yaml
+files/config_nodegroup.sh
+files/config_fargate.sh

@@ -30,11 +30,15 @@ module "networking" {
 
 }
 module "eks_cluster" {
-  source                 = "./modules/eks_cluster"
-  cluster_name           = var.cluster_name
-  eks_security_group_ids = module.networking.eks_cluster_sg
-  eks_subnet_ids         = module.networking.private_subnets
-  region                 = var.region
-  eks_vpc_id             = module.networking.vpc_id
+  source                           = "./modules/eks_cluster"
+  cluster_name                     = var.cluster_name
+  eks_security_group_ids           = module.networking.eks_cluster_sg
+  eks_subnet_ids                   = module.networking.private_subnets
+  region                           = var.region
+  eks_vpc_id                       = module.networking.vpc_id
+  enable_fargate                   = var.enable_fargate
+  enable_nodegroup                 = var.enable_nodegroup
+  nodegroup_scaling_config_options = var.nodegroup_scaling_config_options
+
 
 }
