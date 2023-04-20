@@ -3,13 +3,13 @@
 variable "enable_fargate" {
   description = "Set true enable Fargate for EKS cluster"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_nodegroup" {
   description = "Set true to enable Nodegroup for EKS cluster"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "nodegroup_scaling_config_options" {
