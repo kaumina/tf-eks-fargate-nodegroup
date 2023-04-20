@@ -1,4 +1,4 @@
-# Terraform README
+# About this repo
 
 This repository contains Terraform code for provisioning EKS infrastructure using AWS provider. Enable Fargate or Nodegroup as you wish by setting boolean values in **enable_fargate/enable_nodegroup** in `variable.tf`
 
