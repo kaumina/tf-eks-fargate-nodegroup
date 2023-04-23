@@ -116,3 +116,38 @@ resource "aws_iam_role_policy_attachment" "attach_aws_alb_controller_policy" {
   role       = aws_iam_role.AmazonEKSLoadBalancerControllerRole.name
   policy_arn = aws_iam_policy.AWSLoadBalancerControllerIAMPolicy.arn
 }
+
+# Create aws-ebs-csi-driver-trust-policy.json to accomodate aws ebs csi driver
+data "aws_iam_policy_document" "aws_ebs_csi_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.eks_oidc.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.eks_oidc.url, "https://", "")}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.eks_oidc.arn]
+      type        = "Federated"
+    }
+  }
+}
+
+resource "aws_iam_role" "AmazonEKS_EBS_CSI_DriverRole" {
+  assume_role_policy = data.aws_iam_policy_document.aws_ebs_csi_assume_role_policy.json
+  name               = "AmazonEKS_EBS_CSI_DriverRole"
+}
+
+resource "aws_iam_role_policy_attachment" "AmazonEKS_EBS_CSI_ManagedPolicyAttachment" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.AmazonEKS_EBS_CSI_DriverRole.name
+}

@@ -8,9 +8,11 @@
 # Populate AWS ALB Controller Service Account Yaml
 #############################################################
 
+
+# Create generate Service Accounts definition yaml
 resource "local_file" "alb_yml" {
-  content  = templatefile("${path.root}/templates/aws-load-balancer-controller-service-account.yaml.tftpl", {account_id= "${data.aws_caller_identity.current.account_id}"})
-  filename = "files/aws-load-balancer-controller-service-account.yaml"
+  content  = templatefile("${path.root}/templates/eks-service-accounts.yaml.tftpl", {account_id= "${data.aws_caller_identity.current.account_id}"})
+  filename = "files/eks-service-accounts.yaml"
 }
 
 ############################################################
@@ -29,7 +31,12 @@ resource "local_file" "config_script_nodegroup" {
   aws eks update-kubeconfig --region "${var.region}" --name "${var.cluster_name}"
 
   echo "Installing AWS Loadbalancer Controller Service Account"
-  kubectl apply -f files/aws-load-balancer-controller-service-account.yaml
+  kubectl apply -f files/eks-service-accounts.yaml
+
+  echo "Adding/Updating Helm Repositories"
+  helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+  helm repo add eks https://aws.github.io/eks-charts
+  helm repo update
 
   echo "Installing AWS Loadbalancer Controller Add-on with Helm"
   helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
@@ -39,6 +46,19 @@ resource "local_file" "config_script_nodegroup" {
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region="${var.region}" \
   --set vpcId="${var.eks_vpc_id}"
+
+  echo "Installing AWS EBS CSI Driver self managed Add-on with Helm without "ebs-csi-controller-sa" Service Account"
+  helm upgrade --install aws-ebs-csi-driver \
+  --namespace kube-system \
+  aws-ebs-csi-driver/aws-ebs-csi-driver
+  
+  echo "Update Annotation for Service Account ebs-csi-controller-sa"
+  kubectl annotate serviceaccount ebs-csi-controller-sa \
+  -n kube-system \
+  eks.amazonaws.com/role-arn=arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AmazonEKS_EBS_CSI_DriverRole
+
+  echo "Restart ebs-csi-controller for the annotation to take effect"
+  kubectl rollout restart deployment ebs-csi-controller -n kube-system
 
   EOT
 }
@@ -59,7 +79,7 @@ resource "local_file" "config_script_fargate" {
   aws eks update-kubeconfig --region "${var.region}" --name "${var.cluster_name}"
 
   echo "Installing AWS Loadbalancer Controller Service Account"
-  kubectl apply -f files/aws-load-balancer-controller-service-account.yaml
+  kubectl apply -f files/eks-service-accounts.yaml
 
   echo "Installing AWS Loadbalancer Controller Add-on with Helm"
   helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
