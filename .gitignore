@@ -32,6 +32,6 @@ override.tf.json
 
 # avoid dynamically generated files
 files/config.sh
-files/aws-load-balancer-controller-service-account.yaml
 files/config_nodegroup.sh
 files/config_fargate.sh
+files/eks-service-accounts.yaml
