@@ -18,7 +18,7 @@ Before running the Terraform code, you will need to:
 To use this Terraform code:
 1. Update your AWS key id and access key in credentials file
 2. Clone and set boolean values to enable_fargate/enable_nodegroup in `variable.tf`
-3. execute the Terraform
+3. Execute the Terraform
 4. Execute the shell script (files/config_nodegroup.sh or files/config_fargate.sh) to configure the cluster
 
 ## Variables
