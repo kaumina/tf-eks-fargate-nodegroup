@@ -14,10 +14,19 @@ provider "aws" {
     tags = {
       Environment = var.environment
       Owner       = "DevOps"
-
     }
   }
+}
 
+provider "aws" {
+  alias = "Cloud"
+  region  = var.region
+  default_tags {
+    tags = {
+      Environment = var.environment
+      Owner       = "DevOps"
+    }
+  }
 }
 module "networking" {
   source               = "./modules/networking"
