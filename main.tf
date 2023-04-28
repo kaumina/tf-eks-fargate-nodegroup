@@ -20,7 +20,6 @@ provider "aws" {
 
 provider "aws" {
   alias = "Cloud"
-  profile = "default"
   region  = var.region
   default_tags {
     tags = {
