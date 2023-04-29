@@ -8,7 +8,6 @@ terraform {
   }
 }
 provider "aws" {
-  profile = "default"
   region  = var.region
   default_tags {
     tags = {
@@ -19,7 +18,8 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = "Cloud"
+  alias = "default"
+  profile = "default"
   region  = var.region
   default_tags {
     tags = {
