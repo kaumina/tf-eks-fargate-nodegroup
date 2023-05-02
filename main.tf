@@ -16,7 +16,7 @@ provider "aws" {
     }
   }
 }
-# Provider for Github Actions/ Gitlab
+# Provider for Github Actions/ GitLab
 provider "aws" {
   alias   = "default"
   profile = "default"
