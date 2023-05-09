@@ -43,7 +43,6 @@ resource "aws_eks_node_group" "eks_node_grp" {
   subnet_ids = var.eks_subnet_ids
   instance_types = ["t3a.medium"]
   disk_size = 50
-
   scaling_config {
     desired_size = var.nodegroup_scaling_config_options["desired_size"]
     max_size     = var.nodegroup_scaling_config_options["max_size"]

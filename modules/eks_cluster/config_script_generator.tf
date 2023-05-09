@@ -10,7 +10,7 @@
 
 
 # Create generate Service Accounts definition yaml
-resource "local_file" "alb_yml" {
+resource "local_file" "alb_yml" {  
   content  = templatefile("${path.root}/templates/eks-service-accounts.yaml.tftpl", {account_id= "${data.aws_caller_identity.current.account_id}"})
   filename = "files/eks-service-accounts.yaml"
 }

@@ -28,7 +28,7 @@ variable "enable_fargate" {
 
 variable "enable_nodegroup" {
   type = bool
-  description = "Set the number to 1 to enable Nodegroup"
+  description = "Set the number to 1 to enable Nodegroup"  
 }
 
 variable "nodegroup_scaling_config_options" {

@@ -13,3 +13,8 @@ output "cert_auth" {
 output "oidc_url" {
    value = aws_eks_cluster.eks[*].identity.0.oidc.0.issuer
 }
+
+output "nodegroup_resources_name" {
+   description = "Show EKS Node Group Name"
+   value = aws_eks_node_group.eks_node_grp[0].id
+  }

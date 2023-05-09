@@ -1,18 +1,21 @@
-/*
+
 output "eks_vpc_id" {
-  value = module.networking.vpc_id
+  description = "Show VPC ID"
+  value       = module.networking.vpc_id
+
 }
 
 output "eks_id" {
-  value = module.eks.eks_name
+  description = "Show EKS ID"
+  value       = module.eks_cluster.eks_name
 }
+output "eks_endpoint" {
+  description = "Show EKS Endpoint"
+  value       = module.eks_cluster.eks_endpoint
 
-output "config_map_aws_auth" {
-  value = module.eks.config_map_aws_auth
 }
-
-output "kubeconfig" {
-  value = module.eks.kubeconfig
+output "nodegroup_resources_name" {
+  description = "Show EKS Node Group Name"
+  value       = module.eks_cluster.nodegroup_resources_name
 }
-*/
 

@@ -1,15 +1,23 @@
 # Define variables
 
 variable "enable_fargate" {
-  description = "Set true enable Fargate for EKS cluster"
+  description = "Set true to enable Fargate for EKS cluster"
   type        = bool
   default     = false
+  validation {
+    condition     = var.enable_fargate == true || var.enable_fargate == false
+    error_message = "Value must be true or false"
+  }
 }
 
 variable "enable_nodegroup" {
   description = "Set true to enable Nodegroup for EKS cluster"
   type        = bool
   default     = true
+  validation {
+    condition     = var.enable_nodegroup == true || var.enable_nodegroup == false
+    error_message = "Value must be true or false"
+  }
 }
 
 variable "nodegroup_scaling_config_options" {
