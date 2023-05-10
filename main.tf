@@ -1,4 +1,4 @@
-# Terraform AWS provider
+# Terraform Configuration 
 terraform {
   required_providers {
     aws = {
@@ -7,6 +7,7 @@ terraform {
     }
   }
 }
+# AWS Provider
 provider "aws" {
   region = var.region
   default_tags {
