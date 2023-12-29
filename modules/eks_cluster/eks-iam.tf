@@ -28,11 +28,11 @@ POLICY
 }
 resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = "${aws_iam_role.eks_cluster.name}"
+  role       = aws_iam_role.eks_cluster.name
 }
 resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSServicePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = "${aws_iam_role.eks_cluster.name}"
+  role       = aws_iam_role.eks_cluster.name
 }
 
 # Create Fargate POD execution role
@@ -43,10 +43,10 @@ resource "aws_iam_role" "fargate_role" {
     Statement = [{
       Action = "sts:AssumeRole"
       Effect = "Allow"
-      "Condition": {
-         "ArnLike": {
-            "aws:SourceArn": "arn:aws:eks:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:fargateprofile/${var.cluster_name}/*"
-         }
+      "Condition" : {
+        "ArnLike" : {
+          "aws:SourceArn" : "arn:aws:eks:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:fargateprofile/${var.cluster_name}/*"
+        }
       },
       Principal = {
         Service = "eks-fargate-pods.amazonaws.com"
@@ -54,7 +54,7 @@ resource "aws_iam_role" "fargate_role" {
     }]
     Version = "2012-10-17"
   })
-} 
+}
 
 # Attach Managed policy to execution role
 resource "aws_iam_role_policy_attachment" "fargate_AmazonEKSFargatePodExecutionRolePolicy" {
@@ -108,7 +108,7 @@ resource "aws_iam_role" "AmazonEKSLoadBalancerControllerRole" {
 
 resource "aws_iam_policy" "AWSLoadBalancerControllerIAMPolicy" {
   name   = "AWSLoadBalancerControllerIAMPolicy"
-  policy = "${file("files/iam_policy.json")}"
+  policy = file("files/iam_policy.json")
 }
 
 # Attach the required Amazon EKS managed IAM policy to the IAM role.

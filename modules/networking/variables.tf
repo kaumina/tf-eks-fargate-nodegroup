@@ -4,16 +4,16 @@ variable "cluster_name" {
 }
 variable "vpc_cidr" {
   default = "10.0.0.16"
-  type = string
+  type    = string
 }
 variable "public_subnets_cidr" {
-  type= list(string)
-  
+  type = list(string)
+
 }
 variable "private_subnets_cidr" {
   type = list(string)
-  
+
 }
 variable "environment" {
-  type =string
+  type = string
 }

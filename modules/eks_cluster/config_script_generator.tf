@@ -10,8 +10,8 @@
 
 
 # Create generate Service Accounts definition yaml
-resource "local_file" "alb_yml" {  
-  content  = templatefile("${path.root}/templates/eks-service-accounts.yaml.tftpl", {account_id= "${data.aws_caller_identity.current.account_id}"})
+resource "local_file" "alb_yml" {
+  content  = templatefile("${path.root}/templates/eks-service-accounts.yaml.tftpl", { account_id = data.aws_caller_identity.current.account_id })
   filename = "files/eks-service-accounts.yaml"
 }
 
@@ -20,9 +20,9 @@ resource "local_file" "alb_yml" {
 #############################################################
 
 resource "local_file" "config_script_nodegroup" {
-  count = var.enable_nodegroup ? 1 : 0
+  count    = var.enable_nodegroup ? 1 : 0
   filename = "files/config_nodegroup.sh"
-  content = <<-EOT
+  content  = <<-EOT
   #!/bin/bash
 
   set -euo pipefail
@@ -68,9 +68,9 @@ resource "local_file" "config_script_nodegroup" {
 #############################################################
 
 resource "local_file" "config_script_fargate" {
-  count = var.enable_fargate ? 1 : 0
+  count    = var.enable_fargate ? 1 : 0
   filename = "files/config_fargate.sh"
-  content = <<-EOT
+  content  = <<-EOT
   #!/bin/bash
 
   set -euo pipefail

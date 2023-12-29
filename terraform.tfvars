@@ -1,4 +1,3 @@
-
 enable_fargate   = false
 enable_nodegroup = true
 nodegroup_scaling_config_options = {
