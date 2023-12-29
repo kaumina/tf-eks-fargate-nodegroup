@@ -30,10 +30,26 @@ jobs:
 
     - name: Terraform Apply
 #      if: github.event_name == 'push' && github.ref == 'refs/heads/main'  # Change as needed
-      run: cat files/iam_policy.json
-#      run: terraform apply -auto-approve tfplan
+#      run: cat files/iam_policy.json
+      run: terraform apply -auto-approve tfplan
 
-    - name: Configure EKS Cluster
-      run: echo "sh files/config_fargate.sh"
+    - name: Execute Nodegroup Configuration Script
+      run: |
+        if [ -f ./files/config_nodegroup.sh ]; then
+          chmod +x files/config_nodegroup.sh
+          ./files/config_nodegroup.sh
+        else
+          echo "Nodegroup configuration script not found."
+        fi
+      working-directory: ${{ github.workspace }}
 
+    - name: Execute Fargate Configuration Script
+      run: |
+        if [ -f ./files/config_fargate.sh ]; then
+          chmod +x files/config_fargate.sh
+          ./files/config_fargate.sh
+        else
+          echo "Fargate configuration script not found."
+        fi
+      working-directory: ${{ github.workspace }}
       
