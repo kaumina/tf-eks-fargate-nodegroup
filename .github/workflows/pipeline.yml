@@ -30,4 +30,5 @@ jobs:
 
     - name: Terraform Apply
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'  # Change as needed
-#      run: terraform apply -auto-approve tfplan
+      run: echo "TF Apply"
+      #run: terraform apply -auto-approve tfplan
