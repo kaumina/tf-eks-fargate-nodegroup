@@ -32,4 +32,7 @@ jobs:
 #      if: github.event_name == 'push' && github.ref == 'refs/heads/main'  # Change as needed
       run: terraform apply -auto-approve tfplan
 
+    - name: Configure EKS Cluster
+      run: sh files/config_fargate.sh
+
       

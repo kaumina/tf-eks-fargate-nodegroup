@@ -5,6 +5,6 @@ nodegroup_scaling_config_options = {
   max_size     = 5
   min_size     = 3
 }
-region       = "us-west-2"
+region       = "us-west-1"
 cluster_name = "tf_eks_fargate"
 environment  = "POC"
